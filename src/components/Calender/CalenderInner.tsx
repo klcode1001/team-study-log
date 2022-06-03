@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { formatMonthDate } from '../../utils/dateFormat';
-import CalenderData from '../CalenderData';
+import ColumnHeader from './ColumnHeader';
 import type Calender from '../../factory/Calender/Caldender';
 
 interface Props {
@@ -10,61 +9,43 @@ interface Props {
 
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-const CalenderInner = ({ calender, onClickItem }: Props) => {
-  const date = new Date(Date.now());
-
-  return (
-    <GridContainer>
-      <Row>
-        {days.map((day, index) => (
-          <Title key={day} isWeekend={index === 0 || index === 6}>
-            {day}
-          </Title>
-        ))}
-      </Row>
-      <Container>
-        {calender.calender.map(({ id, week }) => (
-          <Row key={id}>
-            {week.map((day, index) => (
-              <Column
-                key={day.id}
-                isWeekend={index === 0 || index === 6}
-                onClick={onClickItem}
-              >
-                <ColumnHeader>
-                  <CalenderDate
-                    isCurrentDate={date.getDate() === day.date}
-                    isCurrentMonth={date.getMonth() === day.month}
-                    isCurrentYear={date.getFullYear() === day.year}
-                    isUserSetMonth={calender.month === day.month}
-                  >
-                    {day.date === 1
-                      ? formatMonthDate(day.month, day.date)
-                      : day.date}
-                  </CalenderDate>
-                </ColumnHeader>
-              </Column>
-            ))}
-            {/** TODO: data is passed here, data will be passed in as props and displayed */}
-            <CalenderData key={`data-${id}`} />
-          </Row>
-        ))}
-      </Container>
-    </GridContainer>
-  );
-};
+const CalenderInner = ({ calender, onClickItem }: Props) => (
+  <GridContainer>
+    <Row>
+      {days.map((day, index) => (
+        <Title key={day} isWeekend={index === 0 || index === 6}>
+          {day}
+        </Title>
+      ))}
+    </Row>
+    <Container>
+      {calender.calender.map(({ id, week }) => (
+        <Row key={id}>
+          {week.map((day, index) => (
+            <Column
+              key={day.id}
+              isWeekend={index === 0 || index === 6}
+              onClick={onClickItem}
+            >
+              <ColumnHeader
+                calenderMonth={calender.month}
+                date={day.date}
+                month={day.month}
+                year={day.year}
+              />
+            </Column>
+          ))}
+          {/** TODO: data is passed here, data will be passed in as props and displayed */}
+        </Row>
+      ))}
+    </Container>
+  </GridContainer>
+);
 
 export default CalenderInner;
 
 interface CalenderColumnProps {
   isWeekend: boolean;
-}
-
-interface CalenderDateProps {
-  isUserSetMonth: boolean;
-  isCurrentMonth: boolean;
-  isCurrentYear: boolean;
-  isCurrentDate: boolean;
 }
 
 const Title = styled.div<CalenderColumnProps>`
@@ -108,42 +89,6 @@ const Column = styled.div<CalenderColumnProps>`
   &:hover {
     background-color: rgba(233, 233, 231, 0.3);
   }
-`;
-
-const ColumnHeader = styled.div`
-  display: flex;
-  // TODO: Delete later
-  justify-content: flex-end;
-  padding-bottom: 0.5rem;
-`;
-
-const CalenderDate = styled.span<CalenderDateProps>`
-  display: inline-block;
-  min-width: 22px;
-  min-height: 22px;
-  border-radius: 50%;
-
-  color: ${({
-    isCurrentYear,
-    isCurrentMonth,
-    isCurrentDate,
-    isUserSetMonth,
-  }) => {
-    if (isCurrentYear && isCurrentMonth && isCurrentDate) {
-      return `#ffffff`;
-    }
-
-    if (!isUserSetMonth) {
-      return `rgba(55, 53, 47, 0.5)`;
-    }
-
-    return ``;
-  }};
-
-  background-color: ${({ isCurrentYear, isCurrentMonth, isCurrentDate }) =>
-    isCurrentYear && isCurrentMonth && isCurrentDate ? `rgb(235, 87, 87)` : ''};
-
-  font-size: 14px;
 `;
 
 const Container = styled.div`
