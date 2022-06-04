@@ -1,15 +1,17 @@
 import styled from 'styled-components';
 import ColumnHeader from './ColumnHeader';
+import type { Attendence } from '../../api/attendence';
 import type Calender from '../../factory/Calender/Caldender';
 
 interface Props {
   calender: Calender;
   onClickItem?: React.MouseEventHandler<HTMLDivElement>;
+  items: Attendence[];
 }
 
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-const CalenderInner = ({ calender, onClickItem }: Props) => (
+const CalenderInner = ({ calender, onClickItem, items }: Props) => (
   <GridContainer>
     <Row>
       {days.map((day, index) => (
@@ -33,6 +35,19 @@ const CalenderInner = ({ calender, onClickItem }: Props) => (
                 month={day.month}
                 year={day.year}
               />
+              {/** ANCHOR: Let' consider a better solution */}
+              <div>
+                {items.find((item) => {
+                  const date = new Date(item.timeStamp);
+                  return (
+                    date.getFullYear() === day.year &&
+                    date.getMonth() === day.month &&
+                    date.getDate() === day.date
+                  );
+                })
+                  ? '출석'
+                  : null}
+              </div>
             </Column>
           ))}
           {/** TODO: data is passed here, data will be passed in as props and displayed */}
