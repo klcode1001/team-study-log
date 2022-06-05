@@ -1,12 +1,14 @@
 import styled from 'styled-components';
+import DataCell from '../CalenderData/DataCell';
 import ColumnHeader from './ColumnHeader';
-import type { Attendence } from '../../api/attendence';
+import type { Attendance } from '../../api/attendance';
 import type Calender from '../../factory/Calender/Caldender';
+import type { CellClickEventHandler } from './Calender';
 
 interface Props {
   calender: Calender;
-  onClickItem?: React.MouseEventHandler<HTMLDivElement>;
-  items: Attendence[];
+  onClickItem?: CellClickEventHandler;
+  items: Attendance[];
 }
 
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -27,7 +29,9 @@ const CalenderInner = ({ calender, onClickItem, items }: Props) => (
             <Column
               key={day.id}
               isWeekend={index === 0 || index === 6}
-              onClick={onClickItem}
+              onClick={() => {
+                onClickItem?.(`${day.year}-${day.month + 1}-${day.date}`);
+              }}
             >
               <ColumnHeader
                 calenderMonth={calender.month}
@@ -35,19 +39,7 @@ const CalenderInner = ({ calender, onClickItem, items }: Props) => (
                 month={day.month}
                 year={day.year}
               />
-              {/** ANCHOR: Let' consider a better solution */}
-              <div>
-                {items.find((item) => {
-                  const date = new Date(item.timeStamp);
-                  return (
-                    date.getFullYear() === day.year &&
-                    date.getMonth() === day.month &&
-                    date.getDate() === day.date
-                  );
-                })
-                  ? '출석'
-                  : null}
-              </div>
+              <DataCell dateData={day} items={items} />
             </Column>
           ))}
           {/** TODO: data is passed here, data will be passed in as props and displayed */}

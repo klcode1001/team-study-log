@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { mockData } from '../../api/attendence';
+import { useCallback, useState } from 'react';
+import { mockData } from '../../api/attendance';
+import type { Attendance } from '../../api/attendance';
 
 /**
  * @description
@@ -7,13 +8,16 @@ import { mockData } from '../../api/attendence';
  * covers basic CRUD for data.
  */
 function useCalenderData() {
-  const [data, setData] = useState(mockData);
+  const [attendence, setAttendence] = useState(mockData);
 
   // Load attendance data
 
   // Update attendance data
+  const addAttendence = useCallback((newData: Attendance) => {
+    setAttendence((prev) => [...prev, newData]);
+  }, []);
 
-  return data;
+  return { attendence, addAttendence };
 }
 
 export default useCalenderData;

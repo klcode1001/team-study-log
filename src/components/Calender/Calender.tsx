@@ -1,22 +1,46 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
+import { v4 } from 'uuid';
 import useCalender from '../../hooks/useCalender';
 import useCalenderData from '../../hooks/useCalenderData';
 import { formatYearMonth } from '../../utils/dateFormat';
 import CalenderHeader from './CalenderHeader';
 import CalenderInner from './CalenderInner';
+import type { Attendance } from '../../api/attendance';
 
-interface Props {
-  onClickItem?: React.MouseEventHandler<HTMLDivElement>;
-}
+export type CellClickEventHandler = (timestamp: string) => void;
 
-const Calender = ({ onClickItem }: Props) => {
+const Calender = () => {
   const {
     calender,
     setPrevMonthCalender,
     setCurrentMonthCalender,
     setNextMonthCalender,
   } = useCalender();
-  const items = useCalenderData();
+  const { attendence, addAttendence } = useCalenderData();
+  
+  /**
+   * @description
+   * check attendance when clicked.
+   * ANCHOR
+   * This is a temporary implementation and should be changed later.
+   * Use try...catch block to check if you checked in on time.
+   * If you have already checked in, you should not react when you press it.
+   * There is also a need to change the data structure to set.
+   */
+  const handleClickItem: CellClickEventHandler = useCallback(
+    (timestamp: string) => {
+      // create Attendence Object
+      const newAttendence: Attendance = {
+        id: v4(),
+        user: '1',
+        timestamp,
+      };
+
+      addAttendence(newAttendence);
+    },
+    [addAttendence],
+  );
 
   return (
     <Container>
@@ -28,8 +52,8 @@ const Calender = ({ onClickItem }: Props) => {
       />
       <CalenderInner
         calender={calender}
-        items={items}
-        onClickItem={onClickItem}
+        items={attendence}
+        onClickItem={handleClickItem}
       />
     </Container>
   );
