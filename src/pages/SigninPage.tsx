@@ -1,38 +1,39 @@
-import type React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signin } from '../api/auth';
 import AuthFormTemplate from '../components/AuthFormTemplate';
 import { LoadingButton } from '../components/shared/Button';
 import Input from '../components/shared/Input';
+import useForm from '../hooks/shared/useForm';
 
 const SigninPage = () => {
   // signin logic goes here
-  const [data, setData] = useState({ username: '', password: '' });
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({
-    id: '',
-    password: '',
-    result: '',
-  });
+  const { data, handleSubmit, handleChange } = useForm({
+    initialState: {
+      username: '',
+      password: '',
+    },
+    onSubmit: async () => {
+      try {
+        setLoading(true);
+        const response = await signin(data.username, data.password);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await signin(data.username, data.password);
       // TODO - Implement global state and store token to localstorage
-      // TODO - remove console logs
       // TODO - use uncontrolled component
-      console.log('login success');
-    } catch {
-      setLoading(false);
-      // TODO - go error in catch block
-    }
-  };
+        localStorage.setItem('token', response.token);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+        // go to main page
+        navigate('/', { replace: true });
+      } catch {
+        setLoading(false);
+        // TODO - go error in catch block
+        // TODO - Update alert with more styled UI component
+        alert('Incorrect username or password');
+      }
+    },
+  });
 
   return (
     <AuthFormTemplate
