@@ -8,7 +8,7 @@ type ObjectState = {
 interface Props<T extends ObjectState> {
   initialState: T;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
-  validate?: (initialState: T) => T;
+  validate?: (initialState: T) => Partial<T>;
 }
 
 function useForm<T extends ObjectState>({
