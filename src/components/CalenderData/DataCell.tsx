@@ -21,7 +21,7 @@ const DataCell = ({ items, dateData }: Props) => (
         date.getDate() === dateData.date
       );
     })
-      ? '출석'
+      ? 'present'
       : null}
   </div>
 );
