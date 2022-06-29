@@ -1,12 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { v4 } from 'uuid';
+import useAttendance from '../../hooks/useAttendance';
 import useCalender from '../../hooks/useCalender';
-import useCalenderData from '../../hooks/useCalenderData';
 import { formatYearMonth } from '../../utils/dateFormat';
 import CalenderHeader from './CalenderHeader';
 import CalenderInner from './CalenderInner';
-import type { Attendance } from '../../api/attendance';
 
 export type CellClickEventHandler = (timestamp: string) => void;
 
@@ -17,7 +15,7 @@ const Calender = () => {
     setCurrentMonthCalender,
     setNextMonthCalender,
   } = useCalender();
-  const { attendence, addAttendence } = useCalenderData();
+  const { attendance, addAttendence, getMonthlyAttendance } = useAttendance();
   
   /**
    * @description
@@ -28,19 +26,15 @@ const Calender = () => {
    * If you have already checked in, you should not react when you press it.
    * There is also a need to change the data structure to set.
    */
-  const handleClickItem: CellClickEventHandler = useCallback(
-    (timestamp: string) => {
-      // create Attendence Object
-      const newAttendence: Attendance = {
-        id: v4(),
-        user: '1',
-        timestamp,
-      };
+  const handleClickItem: CellClickEventHandler = useCallback(async () => {
+    await addAttendence();
+  }, [addAttendence]);
 
-      addAttendence(newAttendence);
-    },
-    [addAttendence],
-  );
+  // NOTE - Add just the date for today and add others by clicking button.
+  useEffect(() => {
+    const month = new Date().getMonth();
+    getMonthlyAttendance(month + 1);
+  }, [getMonthlyAttendance]);
 
   return (
     <Container>
@@ -52,7 +46,7 @@ const Calender = () => {
       />
       <CalenderInner
         calender={calender}
-        items={attendence}
+        items={attendance}
         onClickItem={handleClickItem}
       />
     </Container>

@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo, useEffect } from 'react';
 import {
   getMonthlyAttendanceData,
   postAttendanceData,
 } from '../../api/attendance';
-import type { Attendance } from '../../api/types';
+import formatAttendanceData from './useAttendance.helper';
+import type { AttendanceResponse } from '../../api/types';
 
 /**
  * @description
@@ -11,19 +12,14 @@ import type { Attendance } from '../../api/types';
  * CRUD related Data
  */
 function useAttendance() {
-  const [attendence, setAttendence] = useState<Attendance[]>([]);
+  const [attendance, setAttendence] = useState<AttendanceResponse[]>([]);
 
   // ANCHOR - can be used differently by post method
   const getMonthlyAttendance = useCallback(async (month: number) => {
     try {
       const response = await getMonthlyAttendanceData(month);
 
-      const attendanceData: Attendance[] = response.map((data) => ({
-        ...data,
-        user: data.user.username,
-      }));
-
-      setAttendence((prev) => [...prev, ...attendanceData]);
+      setAttendence((prev) => [...prev, ...response]);
     } catch (error) {
       console.error(error);
     }
@@ -33,16 +29,18 @@ function useAttendance() {
   const addAttendence = useCallback(async () => {
     try {
       const response = await postAttendanceData();
-      setAttendence((prev) => [
-        ...prev,
-        { ...response, user: response.user.username },
-      ]);
+      setAttendence((prev) => [...prev, response]);
     } catch (error) {
       console.error(error);
     }
   }, []);
 
-  return { attendence, addAttendence, getMonthlyAttendance };
+  const attendanceMemo = useMemo(
+    () => formatAttendanceData(attendance),
+    [attendance],
+  );
+
+  return { attendance: attendanceMemo, addAttendence, getMonthlyAttendance };
 }
 
 export default useAttendance;

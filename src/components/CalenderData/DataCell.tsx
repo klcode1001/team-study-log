@@ -1,8 +1,9 @@
-import type { Attendance } from '../../api/attendance';
+import { formatDate } from '../../hooks/useAttendance/useAttendance.helper';
 import type { Day } from '../../factory/Calender';
+import type { AttendancePair } from '../../hooks/useAttendance/useAttendance.helper';
 
 interface Props {
-  items: Attendance[];
+  items: AttendancePair;
   dateData: Day;
 }
 
@@ -11,19 +12,10 @@ interface Props {
  * Let's consider the better solution
  * Caching?
  * */
-const DataCell = ({ items, dateData }: Props) => (
-  <div>
-    {items.find((item) => {
-      const date = new Date(item.timestamp);
-      return (
-        date.getFullYear() === dateData.year &&
-        date.getMonth() === dateData.month &&
-        date.getDate() === dateData.date
-      );
-    })
-      ? 'present'
-      : null}
-  </div>
-);
+const DataCell = ({ items, dateData }: Props) => {
+  const date = formatDate([dateData.year, dateData.month + 1, dateData.date]);
+  const item = items[date] || [];
+  return <div>{item.length ? 'Present' : null}</div>;
+};
 
 export default DataCell;
