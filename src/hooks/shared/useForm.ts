@@ -22,8 +22,8 @@ function useForm<T extends ObjectState>({
 
   /**
    * @description
-   * A function is executed when onChange event is fired on input component.
-   * Name attr of input component should not be empty to make handleChange function work.
+   * input의 change event가 발생할 때 실행될 함수입니다.
+   * handleChange 함수를 사용하기 위해서는 input 컴포넌트에 name 속성이 비어있으면 안됩니다.
    */
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -31,8 +31,8 @@ function useForm<T extends ObjectState>({
 
   /**
    * @description
-   * A function is executed when onBlur event is fired on input component.
-   * Name attr of input component should not be empty to make handleBlur function work.
+   * input의 blur event가 발생할 때 실행될 함수입니다.
+   * handleBlur 함수를 사용하기 위해서는 input 컴포넌트에 name 속성이 비어있으면 안됩니다.
    */
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     setTouched((prev) => ({ ...prev, [e.target.name]: true }));
@@ -40,7 +40,8 @@ function useForm<T extends ObjectState>({
 
   /**
    * @description
-   * A function is executed when form is submitted
+   * form에 submit event가 발생될 때 실행될 함수입니다.
+   * error 객체에 값이 존재한다면, submit 이벤트가 발생하지 않습니다.
    */
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {

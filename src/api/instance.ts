@@ -27,6 +27,7 @@ function getConfigurationWithAuthorizationBy(
 }
 
 function setupInterceptor(instance: AxiosInstance) {
+  // @ts-expect-error
   instance.interceptors.request.use(getConfigurationWithAuthorizationBy);
 }
 

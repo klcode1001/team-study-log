@@ -35,7 +35,7 @@ interface CalenderDateProps {
 
 const Container = styled.div`
   display: flex;
-  // TODO: Delete later
+  // TODO: 나중에 지울 것
   justify-content: flex-end;
   padding-bottom: 0.5rem;
 `;
