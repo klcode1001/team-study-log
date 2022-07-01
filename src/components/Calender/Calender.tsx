@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import useAttendance from '../../hooks/useAttendance';
 import useCalender from '../../hooks/useCalender';
-import { formatYearMonth } from '../../utils/dateFormat';
 import CalenderHeader from './CalenderHeader';
 import CalenderInner from './CalenderInner';
 

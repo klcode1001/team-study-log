@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { formatMonthDate } from '../../utils/dateFormat';
 
 interface Props {
   year: number;
@@ -18,7 +17,7 @@ const ColumnHeader = ({ calenderMonth, year, month, date }: Props) => {
         isCurrentYear={currentDate.getFullYear() === year}
         isUserSetMonth={calenderMonth === month}
       >
-        {date === 1 ? formatMonthDate(month, date) : date}
+        {date === 1 ? `${month}-${date}` : date}
       </CalenderDate>
     </Container>
   );
@@ -35,7 +34,7 @@ interface CalenderDateProps {
 
 const Container = styled.div`
   display: flex;
-  // TODO: 나중에 지울 것
+  // TODO: delete later
   justify-content: flex-end;
   padding-bottom: 0.5rem;
 `;
