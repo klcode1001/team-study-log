@@ -38,7 +38,7 @@ const Calender = () => {
   return (
     <Container>
       <CalenderHeader
-        title={formatYearMonth(calender.year, calender.month)}
+        title={`${calender.year}-${calender.month}`}
         onCurrent={setCurrentMonthCalender}
         onNext={setNextMonthCalender}
         onPrev={setPrevMonthCalender}
