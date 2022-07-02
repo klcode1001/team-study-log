@@ -1,1 +1,1 @@
-# ChulCheck-client
+# Team-Study-Log-client
