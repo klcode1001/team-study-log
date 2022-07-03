@@ -1,6 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import useAttendance from '../../hooks/useAttendance';
+import {
+  useAttendanceDispatchContext,
+  useAttendanceStateContext,
+} from '../../contexts/AttendanceProvider';
 import useCalender from '../../hooks/useCalender';
 import CalenderHeader from './CalenderHeader';
 import CalenderInner from './CalenderInner';
@@ -14,7 +17,8 @@ const Calender = () => {
     setCurrentMonthCalender,
     setNextMonthCalender,
   } = useCalender();
-  const { attendance, addAttendence, getMonthlyAttendance } = useAttendance();
+  const attendance = useAttendanceStateContext();
+  const { getMonthlyAttendance } = useAttendanceDispatchContext();
   
   /**
    * @description
@@ -25,9 +29,12 @@ const Calender = () => {
    * If you have already checked in, you should not react when you press it.
    * There is also a need to change the data structure to set.
    */
-  const handleClickItem: CellClickEventHandler = useCallback(async () => {
-    await addAttendence();
-  }, [addAttendence]);
+  const handleClickItem: CellClickEventHandler = useCallback(
+    (timestamp: string) => {
+      console.log(timestamp);
+    },
+    []
+  );
 
   // NOTE - Add just the date for today and add others by clicking button.
   useEffect(() => {

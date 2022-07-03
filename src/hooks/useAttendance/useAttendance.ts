@@ -12,24 +12,24 @@ import type { AttendanceResponse } from '../../api/types';
  * CRUD related Data
  */
 function useAttendance() {
-  const [attendance, setAttendence] = useState<AttendanceResponse[]>([]);
+  const [attendance, setAttendance] = useState<AttendanceResponse[]>([]);
 
   // ANCHOR - can be used differently by post method
   const getMonthlyAttendance = useCallback(async (month: number) => {
     try {
       const response = await getMonthlyAttendanceData(month);
 
-      setAttendence((prev) => [...prev, ...response]);
+      setAttendance((prev) => [...prev, ...response]);
     } catch (error) {
       console.error(error);
     }
   }, []);
 
   // TODO - Implement sort algorithm
-  const addAttendence = useCallback(async () => {
+  const addAttendance = useCallback(async () => {
     try {
       const response = await postAttendanceData();
-      setAttendence((prev) => [...prev, response]);
+      setAttendance((prev) => [...prev, response]);
     } catch (error) {
       console.error(error);
     }
@@ -40,7 +40,11 @@ function useAttendance() {
     [attendance]
   );
 
-  return { attendance: attendanceMemo, addAttendence, getMonthlyAttendance };
+  return {
+    attendance: attendanceMemo,
+    addAttendance,
+    getMonthlyAttendance,
+  };
 }
 
 export default useAttendance;
