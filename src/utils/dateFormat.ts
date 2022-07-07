@@ -70,3 +70,35 @@ export function formatDate(
 
   return getYYYYmmDD(year, month, date, delimiter);
 }
+
+interface ParseTimeOptions {
+  format: 'HH:MM:SS';
+  delimiter: string;
+}
+
+/**
+ * @description
+ * The function to format time
+ * NOTE - Temp function. will be refactored later.
+ */
+export function formatTime(
+  dateObject: Date,
+  { format = 'HH:MM:SS', delimiter = ':' }: Partial<ParseTimeOptions>
+) {
+  const hours = dateObject.getHours();
+  const minutes = dateObject.getMinutes();
+  const seconds = dateObject.getSeconds();
+
+  if (format === 'HH:MM:SS') {
+    // do nothing
+  }
+
+  return parseDate(
+    [
+      parseNumberToString(hours, 2),
+      parseNumberToString(minutes, 2),
+      parseNumberToString(seconds, 2),
+    ],
+    delimiter
+  );
+}
