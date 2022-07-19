@@ -22,3 +22,20 @@ export interface Attendance {
 
 export type AttendanceResponse =
   | Pick<Attendance, 'id' | 'timestamp'> & { user: User };
+
+export interface Organization {
+  id: number;
+  name: string;
+  leader: User;
+  members: User[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type OrganizationResponse = Omit<
+  Organization,
+  'createdAt' | 'updatedAt'
+> & {
+  created_at: string;
+  updated_at: string;
+};
