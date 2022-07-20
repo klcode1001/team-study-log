@@ -59,7 +59,7 @@ const Dropdown = <T extends Item>({
           // if trimmed value is blank, close dropdown
           if (!value) {
             close();
-          } else if (value && items?.length) {
+          } else {
             open();
           }
 
@@ -76,9 +76,9 @@ const Dropdown = <T extends Item>({
   return (
     <Container>
       {triggerWithProps}
-      {isOpen && items?.length && (
+      {isOpen && items?.length ? (
         <DropdownMenu items={items} onClickItem={onClickItemWIthProps} />
-      )}
+      ) : null}
     </Container>
   );
 };
