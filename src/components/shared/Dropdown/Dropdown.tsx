@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import useClickAway from '../../../hooks/shared/useClickAway';
 import DropdownMenu from './DropdownMenu';
 
-type Item = {
+export type Item = {
   key: string | number;
   value: React.ReactNode;
 };
@@ -36,6 +37,10 @@ const Dropdown = <T extends Item>({
     setIsOpen((prev) => !prev);
   };
 
+  const ref = useClickAway<HTMLDivElement>(() => {
+    close();
+  });
+
   // In order to create a general-purpose component, it must be able to respond to various events.
   const triggerWithProps = React.isValidElement(trigger)
     ? React.cloneElement(trigger, {
@@ -65,6 +70,14 @@ const Dropdown = <T extends Item>({
 
           trigger.props.onChange?.(e);
         },
+        onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
+          // Only for input element
+          if (e.target.tagName !== 'INPUT') return;
+
+          if (items?.length) {
+            open();
+          }
+        },
       })
     : trigger;
 
@@ -74,8 +87,9 @@ const Dropdown = <T extends Item>({
   };
 
   return (
-    <Container>
+    <Container ref={ref}>
       {triggerWithProps}
+      {/** Dropdown Menu */}
       {isOpen && items?.length ? (
         <DropdownMenu items={items} onClickItem={onClickItemWIthProps} />
       ) : null}

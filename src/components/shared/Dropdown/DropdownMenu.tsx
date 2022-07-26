@@ -12,6 +12,7 @@ interface Props<T> {
   onClickItem: (index: number) => void;
 }
 
+// TODO - need to set max-height
 const DropdownMenu = <T extends Item>({
   items,
   onClickItem,
@@ -38,7 +39,7 @@ export default DropdownMenu;
 
 const Container = styled.ul`
   position: absolute;
-  margin-top: 16px;
+  margin-top: 4px;
   padding: 16px 0;
   width: 100%;
   border: 1px solid ${DEFAULT_COLORS.GREY_300};

@@ -1,32 +1,23 @@
 import React, { useState } from 'react';
-import { getOrganizationList } from '../../api/organization';
-import { Organization } from '../../api/types';
+import { useNavigate } from 'react-router-dom';
+import useOrganization from '../../hooks/useOrganization';
+import { Button } from '../shared/Button';
 import Dropdown from '../shared/Dropdown';
 import Input from '../shared/Input';
 import NavigationBar from '../shared/NavigationBar';
-import formatOrganization from './Header.helper';
 
 type Item = { key: string | number; value: React.ReactNode };
 
 const Header = () => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const { organizations, setOrganizations, searchOrganizations } =
+    useOrganization();
+  const naviagte = useNavigate();
 
   const items = organizations.map<Item>((organization) => ({
     key: organization.id,
     value: organization.name,
   }));
-
-  const getOrganizations = async (query: string) => {
-    if (!query) return;
-
-    try {
-      const data = await getOrganizationList(query);
-      setOrganizations(formatOrganization(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -38,18 +29,25 @@ const Header = () => {
       return;
     }
 
-    await getOrganizations(value);
+    await searchOrganizations(value);
+  };
+
+  const handleClickGroupCreateButton = () => {
+    naviagte('/groups/create');
   };
 
   return (
     <NavigationBar
       left={<div>Team Study Log</div>}
+      middle={
+        <Button onClick={handleClickGroupCreateButton}>Create New Group</Button>
+      }
       right={
         <Dropdown
           items={items}
           trigger={
             <Input
-              placeholder="Search in Group"
+              placeholder="Search group"
               value={inputValue}
               onChange={handleChange}
             />

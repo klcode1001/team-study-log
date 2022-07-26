@@ -1,5 +1,5 @@
 import instance from './instance';
-import { OrganizationResponse } from './types';
+import type { OrganizationResponse } from './types';
 
 /**
  * @description
@@ -34,5 +34,44 @@ export const getOrganization = async (id: number) => {
     return response.data;
   } catch {
     throw new Error('error occurred at getOrganization.');
+  }
+};
+
+export const createOrganization = async (name: string) => {
+  try {
+    const response = await instance.post<OrganizationResponse>(
+      '/api/organizations',
+      {
+        name,
+      }
+    );
+
+    return response.data;
+  } catch {
+    throw new Error('error occurred at createOrganization.');
+  }
+};
+
+export const joinOrganization = async (organizationId: number) => {
+  try {
+    const response = await instance.put<OrganizationResponse>(
+      `/api/organizations/${organizationId}/users`
+    );
+
+    return response.data;
+  } catch {
+    throw new Error('error occurred at joinOrganization.');
+  }
+};
+
+export const getJoinedOrganization = async () => {
+  try {
+    const response = await instance.get<OrganizationResponse[]>(
+      '/api/organizations/joined'
+    );
+
+    return response.data;
+  } catch {
+    throw new Error('error occurred at getJoinedOrganization.');
   }
 };

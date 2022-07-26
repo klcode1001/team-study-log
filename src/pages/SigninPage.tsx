@@ -6,6 +6,9 @@ import AuthFormLayout from '../components/layouts/AuthFormLayout';
 import { LoadingButton } from '../components/shared/Button';
 import Input from '../components/shared/Input';
 import useForm from '../hooks/shared/useForm';
+import Storage from '../utils/storage';
+
+const storage = new Storage();
 
 const SigninPage = () => {
   // signin logic goes here
@@ -21,17 +24,16 @@ const SigninPage = () => {
         setLoading(true);
         const response = await signin(data.username, data.password);
 
-      // TODO - Implement global state and store token to localstorage
-      // TODO - use uncontrolled component
-        localStorage.setItem('token', response.token);
+        // TODO - 전역상태 및 localstorage에 token 정보 저장하기
+        storage.setItem('token', response.token);
 
         // go to main page
         navigate('/', { replace: true });
       } catch {
         setLoading(false);
         // TODO - go error in catch block
-        // TODO - Update alert with more styled UI component
-        alert('Incorrect username or password');
+        // TODO - 다른 UI로 바꾸기
+        alert('아이디 또는 비밀번호가 다릅니다.');
       }
     },
   });
@@ -39,7 +41,7 @@ const SigninPage = () => {
   return (
     <AuthFormLayout>
       <AuthFormTemplate
-        title="Login"
+        title="로그인"
         controls={
           <>
             <Input

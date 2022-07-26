@@ -102,7 +102,6 @@ export function formatTime(
     delimiter
   );
 }
-
 /**
  * @description
  * formatTime function for test

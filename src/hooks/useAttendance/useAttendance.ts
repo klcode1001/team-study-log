@@ -4,7 +4,10 @@ import {
   postAttendanceData,
 } from '../../api/attendance';
 import formatAttendanceData from './useAttendance.helper';
-import type { AttendanceResponse } from '../../api/types';
+import type {
+  AttendanceResponse,
+  AttendanceResponseQuery,
+} from '../../api/types';
 
 /**
  * @description
@@ -14,18 +17,25 @@ import type { AttendanceResponse } from '../../api/types';
 function useAttendance() {
   const [attendance, setAttendance] = useState<AttendanceResponse[]>([]);
 
-  // ANCHOR - can be used differently by post method
-  const getMonthlyAttendance = useCallback(async (month: number) => {
-    try {
-      const response = await getMonthlyAttendanceData(month);
+  /**
+   * @description
+   * Function to load the log by month
+   * @param query `AttendanceResponseQuery`
+   */
+  const getAttendanceList = useCallback(
+    async (query?: AttendanceResponseQuery) => {
+      try {
+        const response = await getMonthlyAttendanceData(query);
 
-      setAttendance((prev) => [...prev, ...response]);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+        setAttendance((prev) => [...prev, ...response]);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    []
+  );
 
-  // TODO - Implement sort algorithm
+  // TODO - Implement sorting algorithm
   const addAttendance = useCallback(async () => {
     try {
       const response = await postAttendanceData();
@@ -43,7 +53,7 @@ function useAttendance() {
   return {
     attendance: attendanceMemo,
     addAttendance,
-    getMonthlyAttendance,
+    getAttendanceList,
   };
 }
 

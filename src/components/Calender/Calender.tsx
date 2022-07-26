@@ -18,16 +18,18 @@ const Calender = () => {
     setNextMonthCalender,
   } = useCalender();
   const attendance = useAttendanceStateContext();
-  const { getMonthlyAttendance } = useAttendanceDispatchContext();
-  
+  const { getAttendanceList } = useAttendanceDispatchContext();
+
   /**
    * @description
-   * check attendance when clicked.
+   * 클릭 시 출석 체크를 진행한다.
    * ANCHOR
-   * This is a temporary implementation and should be changed later.
-   * Use try...catch block to check if you checked in on time.
-   * If you have already checked in, you should not react when you press it.
-   * There is also a need to change the data structure to set.
+   * 현재는 임시로 구현된 부분이므로, 추후 변경되어야 함
+   * try...catch block을 이용하여 정시에 출석체크 했는지 체크
+   * 이미 출석했다면, 눌러도 반응이 없도록 해야 함
+   * 자료 구조를 set으로 바꿔야 할 필요성도 있음
+   * 출석하기 버튼은 따로 두고, 달력 cell 클릭 시 출석 정보를 불러오도록 하기
+   * TODO - 클릭 시 출석 상세 정보를 불러오도록 수정하기
    */
   const handleClickItem: CellClickEventHandler = useCallback(
     (timestamp: string) => {
@@ -36,16 +38,16 @@ const Calender = () => {
     []
   );
 
-  // NOTE - Add just the date for today and add others by clicking button.
+  // NOTE - 오늘 날짜의 달만 불러오고, 그 뒤에는 버튼을 통해서 추가한다.
   useEffect(() => {
     const month = new Date().getMonth();
-    getMonthlyAttendance(month + 1);
-  }, [getMonthlyAttendance]);
+    getAttendanceList({ month: month + 1 });
+  }, [getAttendanceList]);
 
   return (
     <Container>
       <CalenderHeader
-        title={`${calender.year}-${calender.month}`}
+        title={`${calender.year}년 ${calender.month + 1}월`}
         onCurrent={setCurrentMonthCalender}
         onNext={setNextMonthCalender}
         onPrev={setPrevMonthCalender}

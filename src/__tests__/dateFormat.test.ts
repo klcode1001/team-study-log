@@ -19,7 +19,6 @@ describe('date format', () => {
     ).toBe('10 09');
   });
 
-  // Error is occured when use getHours, getMinutes for the timezone different with CI env
   it('format time, options: { format: "HH:MM:SS", delimiter: ":" }', () => {
     expect(
       formatUTCTime(new Date(1667975238660), {
