@@ -9,7 +9,7 @@ export type UserResponse = Pick<UserInterface, 'id' | 'username' | 'token'>;
 export type User = Pick<UserInterface, 'id' | 'username'>;
 export type UserSigninFormType = Pick<UserInterface, 'username' | 'password'>;
 
-
+// TODO - change to camelCase
 export interface Organization {
   id: number;
   name: string;

@@ -6,7 +6,7 @@ import Dropdown from '../shared/Dropdown';
 import Input from '../shared/Input';
 import NavigationBar from '../shared/NavigationBar';
 
-type Item = { key: string | number; value: React.ReactNode };
+type Item = { key: string | number; value: string };
 
 const Header = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -19,11 +19,11 @@ const Header = () => {
     value: organization.name,
   }));
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  const goToOrganizationInfoPage = (id: number | string) => {
+    naviagte(`/organizations/${id}`);
+  };
 
-    const value = e.target.value.trim();
-
+  const searchValue = async (value: string) => {
     if (!value) {
       setOrganizations([]);
       return;
@@ -32,13 +32,19 @@ const Header = () => {
     await searchOrganizations(value);
   };
 
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+
+    await searchValue(e.target.value.trim());
+  };
+
   const handleClickGroupCreateButton = () => {
     naviagte('/groups/create');
   };
 
   return (
     <NavigationBar
-      left={<div>Team Study Log</div>}
+      left={<div>Chulcheck(Team Study Log)</div>}
       middle={
         <Button onClick={handleClickGroupCreateButton}>Create New Group</Button>
       }
@@ -47,11 +53,16 @@ const Header = () => {
           items={items}
           trigger={
             <Input
-              placeholder="Search group"
+            placeholder="Search group"
               value={inputValue}
               onChange={handleChange}
             />
           }
+          onClickItem={async (index) => {
+            setInputValue(items[index].value);
+
+            goToOrganizationInfoPage(organizations[index].id);
+          }}
         />
       }
     />

@@ -30,7 +30,7 @@ function useForm<T extends ObjectState>({
 
   /**
    * @description
-   * A function is called when change event is occured.
+   * input의 change event가 발생할 때 실행될 함수입니다.
    * handleChange 함수를 사용하기 위해서는 input 컴포넌트에 name 속성이 비어있으면 안됩니다.
    */
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

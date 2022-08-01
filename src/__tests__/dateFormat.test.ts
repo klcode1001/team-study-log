@@ -1,5 +1,6 @@
 import { formatDate, formatUTCTime } from '../utils/dateFormat';
 
+// TODO - to pass test, formart after change to UTC format
 describe('date format', () => {
   it('format date, options: { format: "YYYY-MM-DD", delimiter: "-" }', () => {
     expect(
@@ -19,6 +20,7 @@ describe('date format', () => {
     ).toBe('10 09');
   });
 
+  // Due to the difference of timezone between CI env and local, the error is occured while testing for using getHours, getMinutes
   it('format time, options: { format: "HH:MM:SS", delimiter: ":" }', () => {
     expect(
       formatUTCTime(new Date(1667975238660), {

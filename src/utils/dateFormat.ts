@@ -4,7 +4,6 @@ function getYear(dateObject: Date) {
   return dateObject.getFullYear();
 }
 
-// NOTE - Pay attention why 1 is added
 function getMonth(dateObject: Date) {
   return dateObject.getMonth() + 1;
 }
@@ -102,6 +101,7 @@ export function formatTime(
     delimiter
   );
 }
+
 /**
  * @description
  * formatTime function for test

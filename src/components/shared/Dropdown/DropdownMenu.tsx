@@ -12,7 +12,7 @@ interface Props<T> {
   onClickItem: (index: number) => void;
 }
 
-// TODO - need to set max-height
+// TODO - max height
 const DropdownMenu = <T extends Item>({
   items,
   onClickItem,

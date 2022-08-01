@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Storage from '../utils/storage';
 
@@ -17,7 +17,7 @@ interface Props {
 const Protected = ({ children }: Props) => {
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const value = storage.getItem<string>('token', '');
 
     if (!value) {

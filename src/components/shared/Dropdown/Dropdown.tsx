@@ -7,6 +7,7 @@ export type Item = {
   key: string | number;
   value: React.ReactNode;
 };
+
 interface Props<T> {
   /* trigger is the component change the state of Dropdown */
   trigger: React.ReactNode;
@@ -37,9 +38,7 @@ const Dropdown = <T extends Item>({
     setIsOpen((prev) => !prev);
   };
 
-  const ref = useClickAway<HTMLDivElement>(() => {
-    close();
-  });
+  const ref = useClickAway<HTMLDivElement>(() => close());
 
   // In order to create a general-purpose component, it must be able to respond to various events.
   const triggerWithProps = React.isValidElement(trigger)
@@ -77,11 +76,13 @@ const Dropdown = <T extends Item>({
           if (items?.length) {
             open();
           }
+
+          trigger.props.onFocus?.(e);
         },
       })
     : trigger;
 
-  const onClickItemWIthProps = (index: number) => {
+  const onClickItemWithProps = (index: number) => {
     close();
     onClickItem?.(index);
   };
@@ -89,9 +90,9 @@ const Dropdown = <T extends Item>({
   return (
     <Container ref={ref}>
       {triggerWithProps}
-      {/** Dropdown Menu */}
+      {/* Dropdown Menu */}
       {isOpen && items?.length ? (
-        <DropdownMenu items={items} onClickItem={onClickItemWIthProps} />
+        <DropdownMenu items={items} onClickItem={onClickItemWithProps} />
       ) : null}
     </Container>
   );

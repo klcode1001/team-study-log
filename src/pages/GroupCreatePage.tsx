@@ -39,26 +39,23 @@ const GroupCreatePage = () => {
 
         if (!data.groupName.trim()) {
           errors.groupName =
-            '그룹 이름은 적어도 공백을 제외한 1글자 이상이어야 합니다.';
+            'Group name must be longer than 1 at least';
         }
 
         return errors;
       },
     });
 
-  // TODO - 임시 템플릿 교체하기
-  // NOTE - 해당 템플릿은 임시 템플릿 입니다.
   return (
     <AuthFormLayout>
-      {/* TODO - 일단 footer에 에러 넣고 추후 고도화 */}
       <AuthFormTemplate
-        title="그룹 만들기"
+        title="Create Group"
         controls={
           <Input
             disabled={isLoading}
-            label="그룹 이름"
+            label="Group Name"
             name="groupName"
-            placeholder="그룹 이름"
+            placeholder="Group Name"
             value={data.groupName}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -77,7 +74,7 @@ const GroupCreatePage = () => {
             type="submit"
             variant="primary"
           >
-            그룹 만들기
+            Create Group
           </Button>
         }
         onSubmit={handleSubmit}

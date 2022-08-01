@@ -25,14 +25,26 @@ const AttendanceCard = () => {
 
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
 
-  const handleClick = async () => {
+  const postAttendance = async (organizationId: number) => {
     try {
-      await startTransition(addAttendance());
+      await startTransition(addAttendance(organizationId));
+
+      // initialize
+      setSelectedItemIndex(-1);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleClick = () => {
+    if (selectedItemIndex < 0) {
+      window.alert('Select the group.');
+      return;
+    }
+    postAttendance(organizations[selectedItemIndex].id);
+  };
+
+  // NOTE - Load the group data when component is mounted by using useEffect
   useEffect(() => {
     (async () => {
       await getJoinedOrganizations();
@@ -51,7 +63,7 @@ const AttendanceCard = () => {
             <Select
               title={
                 selectedItemIndex === -1
-                  ? 'Select Group...'
+                  ? 'Select the group...'
                   : items[selectedItemIndex].value
               }
             />
@@ -66,7 +78,7 @@ const AttendanceCard = () => {
             variant="primary"
             onClick={handleClick}
           >
-            Check attendance at the current time
+            Check atendance at the current time
           </LoadingButton>
         </Wrapper>
       </Wrapper>

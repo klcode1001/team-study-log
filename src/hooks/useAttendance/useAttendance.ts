@@ -1,6 +1,6 @@
 import { useCallback, useState, useMemo } from 'react';
 import {
-  getMonthlyAttendanceData,
+  getAttendanceList as getAttendanceData,
   postAttendanceData,
 } from '../../api/attendance';
 import formatAttendanceData from './useAttendance.helper';
@@ -8,6 +8,11 @@ import type {
   AttendanceResponse,
   AttendanceResponseQuery,
 } from '../../api/types';
+
+export type GetAttendanceListHandler = (
+  query?: AttendanceResponseQuery
+) => Promise<void>;
+export type AddAttendanceHandler = (organizationId: number) => Promise<void>;
 
 /**
  * @description
@@ -22,10 +27,10 @@ function useAttendance() {
    * Function to load the log by month
    * @param query `AttendanceResponseQuery`
    */
-  const getAttendanceList = useCallback(
-    async (query?: AttendanceResponseQuery) => {
+  const getAttendanceList: GetAttendanceListHandler = useCallback(
+    async (query) => {
       try {
-        const response = await getMonthlyAttendanceData(query);
+        const response = await getAttendanceData(query);
 
         setAttendance((prev) => [...prev, ...response]);
       } catch (error) {
@@ -35,15 +40,17 @@ function useAttendance() {
     []
   );
 
-  // TODO - Implement sorting algorithm
-  const addAttendance = useCallback(async () => {
-    try {
-      const response = await postAttendanceData();
-      setAttendance((prev) => [...prev, response]);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const addAttendance: AddAttendanceHandler = useCallback(
+    async (organizationId) => {
+      try {
+        const response = await postAttendanceData(organizationId);
+        setAttendance((prev) => [...prev, response]);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    []
+  );
 
   const attendanceMemo = useMemo(
     () => formatAttendanceData(attendance),

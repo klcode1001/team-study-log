@@ -51,7 +51,7 @@ const SignupPage = () => {
   return (
     <AuthFormLayout>
       <AuthFormTemplate
-        title="Signup"
+        title="Register"
         controls={
           <>
             <Input
