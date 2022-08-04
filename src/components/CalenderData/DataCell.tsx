@@ -7,15 +7,11 @@ interface Props {
   dateData: Day;
 }
 
-/**
- * ANCHOR
- * 더 좋은 방법이 있는지 생각해보기
- * 캐싱도 하면 좋을 듯?
- * */
+
 const DataCell = ({ items, dateData }: Props) => {
   const date = formatDate([dateData.year, dateData.month + 1, dateData.date]);
   const item = items[date] || [];
-  return <div>{item.length ? '출석' : null}</div>;
+  return <div>{item.length ? 'Attended' : null}</div>;
 };
 
 export default DataCell;

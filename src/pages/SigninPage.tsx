@@ -24,7 +24,6 @@ const SigninPage = () => {
         setLoading(true);
         const response = await signin(data.username, data.password);
 
-        // TODO - 전역상태 및 localstorage에 token 정보 저장하기
         storage.setItem('token', response.token);
 
         // go to main page
@@ -32,8 +31,7 @@ const SigninPage = () => {
       } catch {
         setLoading(false);
         // TODO - go error in catch block
-        // TODO - 다른 UI로 바꾸기
-        alert('아이디 또는 비밀번호가 다릅니다.');
+        alert('Incorrect username or password');
       }
     },
   });
@@ -41,7 +39,7 @@ const SigninPage = () => {
   return (
     <AuthFormLayout>
       <AuthFormTemplate
-        title="로그인"
+        title="Login"
         controls={
           <>
             <Input

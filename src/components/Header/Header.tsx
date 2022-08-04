@@ -44,7 +44,7 @@ const Header = () => {
 
   return (
     <NavigationBar
-      left={<div>Chulcheck(Team Study Log)</div>}
+      left={<div>Team Study Log</div>}
       middle={
         <Button onClick={handleClickGroupCreateButton}>Create New Group</Button>
       }
