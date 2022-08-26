@@ -90,7 +90,7 @@ const SignupPage = () => {
             type="submit"
             variant="primary"
           >
-            Signin
+            Signup
           </LoadingButton>
         }
         onSubmit={handleSubmit}
